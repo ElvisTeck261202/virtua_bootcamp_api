@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "consultar posts" },
+  { "id": 2, "name": "agregar posts" },
+  { "id": 3, "name": "agregar comentarios" },
+  { "id": 4, "name": "editar comentarios" },
+  { "id": 5, "name": "eliminar comentarios" },
+  { "id": 6, "name": "editar posts" }
+]
