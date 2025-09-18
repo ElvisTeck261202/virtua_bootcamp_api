@@ -12,13 +12,23 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->params['perPage'] ?: 10;
+        $query = $request->params['search'] ?: '';
+
         $posts = Post::with([
             'creator'
-        ])->get();
+        ])->when($query, function($q) use ($query) {
+            $q->where(function($q2) use ($query) {
 
-        return $posts;
+            });
+        })
+        ->get();
+
+
+
+        return $posts->paginate($perPage);
     }
 
     /**
@@ -83,4 +93,18 @@ class PostController extends Controller
     {
         //
     }
+
+    public function getPostsByUser($user_uuid)
+    {
+        try {
+            $posts = Post::where('user_uuid', $user_uuid)->get();
+
+            return $posts;
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    } 
 }
