@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load(['roles', 'permissions']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -22,4 +22,5 @@ Route::middleware(['permission:crear posts'])->group(function () {
 
 Route::middleware(['permission: consultar posts'])->group(function () {
     Route::get('posts', [PostController::class, 'index']);
+    Route::get('posts/{user_uuid}', [PostController::class, 'getPostsByUser']);
 });
