@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
 
 class TestUserSeeder extends Seeder
 {
@@ -63,7 +64,7 @@ class TestUserSeeder extends Seeder
 
         $user2 = User::create([
             'name' => 'usuario',
-            'email' => 'user@gmail.com',
+            'email' => 'user2@gmail.com',
             'password' => Hash::make('1234567890')
         ]);
 
