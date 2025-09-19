@@ -85,12 +85,12 @@ class CommentController extends Controller
             ], 404);
         }
 
-        // if (Auth::user()->uuid !== $comment->commented_by_uuid) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'No autorizado para eliminar este comentario'
-        //     ], 403);
-        // }
+        if (Auth::user()->uuid !== $comment->commented_by_uuid) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No autorizado para eliminar este comentario'
+            ], 403);
+        }
 
         try {
             $comment->delete();
