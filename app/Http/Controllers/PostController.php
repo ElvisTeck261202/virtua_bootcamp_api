@@ -14,10 +14,15 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = $request->params['perPage'] ?: 10;
+        $query = $request->params['search'] ?: '';
+
         $posts = Post::with([
             'creator'
-        ])->get();
-
+        ])->when($query, function($q) use ($query) {
+            return $q->where('name', 'like', '%' . $query . '%'); 
+        });
+        
         return $posts->paginate($perPage);
     }
 
