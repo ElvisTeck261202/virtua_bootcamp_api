@@ -16,11 +16,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('user/{uuid}', [UserController::class, 'destroy']);
 });
 
-Route::middleware(['permission:crear posts'])->group(function () {
+Route::middleware(['permission:agregar posts'])->group(function () {
     Route::post('post', [PostController::class, 'store']);
 });
 
-Route::middleware(['permission: consultar posts'])->group(function () {
+Route::middleware(['permission:consultar posts'])->group(function () {
     Route::get('posts', [PostController::class, 'index']);
     Route::get('posts/{user_uuid}', [PostController::class, 'getPostsByUser']);
 });
