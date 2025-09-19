@@ -16,7 +16,8 @@ class Comment extends Model
 
     protected $fillable = [
         'comment',
-        'post_uuid'
+        'post_uuid',
+        'commented_by_uuid'
     ];
 
     protected $hidden = [
