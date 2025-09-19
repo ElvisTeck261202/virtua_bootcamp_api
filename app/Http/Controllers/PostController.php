@@ -18,7 +18,8 @@ class PostController extends Controller
         $query = $request->params['search'] ?: '';
 
         $posts = Post::with([
-            'creator'
+            'creator',
+            'comments'
         ])->when($query, function($q) use ($query) {
             return $q->where('name', 'like', '%' . $query . '%'); 
         });

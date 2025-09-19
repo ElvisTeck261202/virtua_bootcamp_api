@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Illumunate\Database\Eloquent\Relations\BelongstTo;
 
 class Comment extends Model
 {
@@ -20,4 +21,9 @@ class Comment extends Model
         'id',
         'deleted_at'
     ];
+
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'post_uuid', 'uuid');
+    }
 }
