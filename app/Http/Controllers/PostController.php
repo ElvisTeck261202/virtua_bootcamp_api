@@ -93,7 +93,7 @@ class PostController extends Controller
     public function getPostsByUser($user_uuid)
     {
         try {
-            $posts = Post::where('user_uuid', $user_uuid)->get();
+            $posts = Post::where('user_uuid', $user_uuid)->with('creator', 'comments')->get();
 
             return $posts;
         } catch(\Exception $e) {
