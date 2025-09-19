@@ -74,17 +74,25 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy($comment_uuid)
     {
-        if (Auth::user()->uuid !== $comment->commented_by_uuid) {
+        $comment = Comment::where('uuid', $comment_uuid)->first();
+
+        if (!isset($comment)) {
             return response()->json([
                 'status' => false,
-                'message' => 'No autorizado para eliminar este comentario'
-            ], 403);
+                'message' => 'Comentario no encontrado'
+            ], 404);
         }
 
-        try {
+        // if (Auth::user()->uuid !== $comment->commented_by_uuid) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'No autorizado para eliminar este comentario'
+        //     ], 403);
+        // }
 
+        try {
             $comment->delete();
             
             return response()->json([

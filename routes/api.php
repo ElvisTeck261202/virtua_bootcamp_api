@@ -30,3 +30,8 @@ Route::middleware(['permission: agregar comentarios'])->group(function () {
     Route::post('comment', [CommentController::class, 'store']);
 });
 
+Route::middleware(['permission: elimnar comentarios'])->group(function () {
+    Route::delete('comment/{comment_uuid}', [CommentController::class, 'destroy']);
+});
+
+Route::delete('comment/{comment_uuid}', [CommentController::class, 'destroy']);
