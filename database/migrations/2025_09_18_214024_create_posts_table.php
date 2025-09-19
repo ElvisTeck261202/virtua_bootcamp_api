@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
 
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->string('name');
             $table->string('description');
             $table->uuid('user_uuid');
