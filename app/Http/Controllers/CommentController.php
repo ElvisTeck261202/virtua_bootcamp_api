@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -37,14 +38,15 @@ class CommentController extends Controller
         try {
             Comment::create([
                 'comment' => $request->comment,
-                'post_uuid' => $request->post_uuid
+                'post_uuid' => $request->post_uuid,
+                'commented_by_uuid' => Auth::user()->uuid
             ]);
 
             return response()->json([
                 'status' => true,
                 'message' => '!Comentario creado exitosamente!'
             ]);
-            
+
         } catch(\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -74,6 +76,26 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        if (Auth::user()->uuid !== $comment->commented_by_uuid) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No autorizado para eliminar este comentario'
+            ], 403);
+        }
+
+        try {
+
+            $comment->delete();
+            
+            return response()->json([
+                'status' => true,
+                'message' => '¡Comentario eliminado exitosamente!'
+            ], 200);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

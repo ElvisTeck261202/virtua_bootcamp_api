@@ -14,8 +14,8 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->params['perPage'] ?: 10;
-        $query = $request->params['search'] ?: '';
+        $perPage = $request->input('perPage', 10);
+        $query = $request->input('search', '');
 
         $posts = Post::with([
             'creator',

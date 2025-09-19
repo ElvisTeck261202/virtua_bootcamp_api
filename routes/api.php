@@ -30,4 +30,3 @@ Route::middleware(['permission: agregar comentarios'])->group(function () {
     Route::post('comment', [CommentController::class, 'store']);
 });
 
-Route::get('posts', [PostController::class, 'index']);
