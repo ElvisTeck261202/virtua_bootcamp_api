@@ -14,9 +14,14 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = $request->input('perPage', 10);
+        $query = $request->input('search', '');
+
         $posts = Post::with([
             'creator'
-        ])->get();
+        ])->when($query, function ($q) use ($query) {
+            return $q->where('name', 'like', '%' . $query . '%');
+        });
 
         return $posts->paginate($perPage);
     }
@@ -46,18 +51,17 @@ class PostController extends Controller
                 'description' => $request->description,
                 'user_uuid' => $request->user_uuid
             ]);
-        
+
             return response()->json([
                 'status' => true,
                 'message' => '!Post creado correctamente!'
             ], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => 'Ocurrio un error: ' . $e->getMessage()
             ], 500);
-        }   
-
+        }
     }
 
     /**
@@ -87,14 +91,14 @@ class PostController extends Controller
     public function getPostsByUser($user_uuid)
     {
         try {
-            $posts = Post::where('user_uuid', $user_uuid)->get();
+            $posts = Post::where('user_uuid', $user_uuid)->with('creator')->get();
 
             return $posts;
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage()
             ], 500);
         }
-    } 
+    }
 }
